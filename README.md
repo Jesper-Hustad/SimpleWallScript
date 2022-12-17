@@ -7,6 +7,11 @@ AutoHotKey Script that creates a wall of Minecraft instances for faster speedrun
 ## Download
 [Download the SimpleWall Script](https://github.com/Jesper-Hustad/SimpleWallScript/releases/download/Alpha/SimpleWallScript.ahk)  
 
+
+For those who prefer playing fullscreen (F11):  
+[Modified Script for always fullscreen](https://github.com/Jesper-Hustad/SimpleWallScript/releases/download/v.0.1.2/SimpleWallScript.ahk)
+
+
 ## Getting Started
 1.  Install Current Version of AutoHotKey here: https://www.autohotkey.com/  
 2.  Download the Script using the link above
@@ -19,6 +24,11 @@ AutoHotKey Script that creates a wall of Minecraft instances for faster speedrun
 This script assumes you have multiple instances of minecraft running using MultiMC or similar.  
 Learn how to setup minecraft with MultiMC and speedrunning mods here: https://www.youtube.com/watch?v=VL8Syekw4Q0.  
 After setting up MultiMC select an instance and click "Copy Instance" to create more.
+
+## Feedback wanted!
+Is there something you noticed is missing?  
+Is there an optimization or feature that you think should be implemented?  
+[Create a new issue here on github](https://github.com/Jesper-Hustad/SimpleWallScript/issues/new/choose) and we will take your feedback.
 
 ## Features
 - Make custom HotKeys for Select and Refresh 
