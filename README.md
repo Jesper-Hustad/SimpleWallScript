@@ -5,11 +5,11 @@ AutoHotKey Script that creates a wall of Minecraft instances for faster speedrun
 ![](screenshot.png)
 
 ## Download
-[Download the SimpleWall Script](https://github.com/Jesper-Hustad/SimpleWallScript/releases/download/Alpha/SimpleWallScript.ahk)  
+### [Download the SimpleWall Script](https://github.com/Jesper-Hustad/SimpleWallScript/releases/download/v.0.1.2/SimpleWallScript.ahk)
 
 
-For those who prefer playing fullscreen (F11):  
-[Modified Script for always fullscreen](https://github.com/Jesper-Hustad/SimpleWallScript/releases/download/v.0.1.2/SimpleWallScript.ahk)
+
+Other version that does not fullscreen: [Modified Script without fullscreen](https://github.com/Jesper-Hustad/SimpleWallScript/releases/download/Alpha/SimpleWallScript.ahk)  
 
 
 ## Getting Started
