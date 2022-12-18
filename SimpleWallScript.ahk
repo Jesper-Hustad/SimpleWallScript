@@ -3,7 +3,7 @@
 
 
 ; If you have rebound any key in Minecraft change them here
-DEFAULT_CREATE_NEW_WORLD_KEY=F9
+DEFAULT_CREATE_NEW_WORLD_KEY=F6
 DEFAULT_F3_KEY=F3
 
 ; INSTRUCTIONS:
@@ -30,7 +30,7 @@ DEFAULT_F3_KEY=F3
 ; You can change initial starting values here (^ =ctrl, ! = alt, # = shift)
 defaultStartKey=^E
 defaultResetKey=^Y
-defaultPadding=15
+defaultPadding=0
 
 cleanF3PauseMenuWaitTime:=300
 
@@ -47,6 +47,8 @@ menu, tray, default, Show GUI
 
 SysGet, screenWidth, 61 
 SysGet, screenHeight, 62 
+SysGet, fsWidth, 16 
+SysGet, fsHeight, 17 
 inGame := false
 
 WinGet, gameWindowList, list,ahk_class GLFW30,, Program Manager
@@ -123,7 +125,7 @@ Gui, Add, Slider,  +E0x20 0 cRed x%t6% y%tablePosY% w23 h%tableHeight% GSliderRo
 gui, font, Q5 c%color12% s13, Bahnschrift 	 ;color & size GuiTitle
 Gui, Add, Text, +E0x20 0x200 cBlack x6 y3 w%width% h22 BackgroundTrans Left gGuiMove , %guititle%   
 gui, font, Q5 c888888 s10, Calibri	 ;color & size GuiTitle
-Gui, Add, Text, +E0x20 0x200 x142 y5 w%width% h22 BackgroundTrans gGuiMove , v0.1   
+Gui, Add, Text, +E0x20 0x200 x142 y5 w%width% h22 BackgroundTrans gGuiMove , v0.1.2   
 
 ; hotkey input GUI
 i1 := inputPosY+20, i2 :=i1+28, i3 :=i2+20, i4:=i3+28, i5:=i4+20
@@ -134,8 +136,8 @@ Gui, Add, Hotkey, +E0x20 0 cRed x%inputPosX% y%i1% w70 h23 cBlack vChosenStartKe
 Gui, Add, Text, +E0x20 0x200 cBlack x%inputPosX% y%i2% w%width% h22 BackgroundTrans Left, Refresh
 Gui, Add, Hotkey, x%inputPosX% y%i3% w70 h23  vChosenResetKey gNewResetHotKey, %defaultResetKey%
 Gui, Add, Text, +E0x20 0x200 cBlack x%inputPosX% y%i4% w%width% h22 BackgroundTrans Left, Spacing
-Gui, Add, Edit, +E0x20 0 x%inputPosX% y%i5% w70 h23 Number cBlack BackgroundWhite, %defaultPadding%
-Gui, Add, UpDown, vcurrentPadding gNewPadding Range0-40, 15
+Gui, Add, Edit, +E0x20 0 x%inputPosX% y%i5% w70 h23 Number cBlack BackgroundWhite, 0
+Gui, Add, UpDown, vcurrentPadding gNewPadding Range0-40, %defaultPadding%
 currentPadding := defaultPadding
 
 ; offscreen button to remove focus from hotkey input
@@ -231,9 +233,9 @@ startGameRoutine:
         return
     }
     
-    WinSet, Style, +0xC00000, ahk_id %windowID%
+    ; WinSet, Style, +0xC00000, ahk_id %windowID%
     Sleep 200
-    WinMove,ahk_id %windowID%,,0,0,screenWidth,screenHeight
+    WinMove,ahk_id %windowID%,,0,0,A_ScreenWidth,A_ScreenHeight
     WinMaximize, ahk_id %windowID%
     
     WinSet, AlwaysOnTop, On, ahk_id %windowID%
@@ -269,7 +271,7 @@ newWorldRoutine:
         y := Floor((index)/col)
         distX := winWidth*x
         distY := winHeight*y
-        WinSet, Style, -0xC00000, ahk_id %windowID%
+        WinSet, Style, -0xC40000, ahk_id %windowID%
         WinMove,ahk_id %windowID%,,distX-p,distY-p,winWidth+p,winHeight+p
         resetKey:=DEFAULT_CREATE_NEW_WORLD_KEY
         ControlSend, ahk_parent, {Blind}{%resetKey% Down}{%resetKey% Up}, ahk_id %windowID%
