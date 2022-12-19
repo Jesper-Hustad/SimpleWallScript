@@ -34,6 +34,94 @@ defaultPadding=0
 
 cleanF3PauseMenuWaitTime:=300
 
+
+actionSelect(){
+    global
+    if(inGame) {
+        return
+    }
+
+    MouseGetPos,,,windowID,,
+    WinGetClass, className, ahk_id %windowID%,
+    
+    if(className != "GLFW30") {
+        return
+    }
+    
+    ; WinSet, Style, +0xC00000, ahk_id %windowID%
+    Sleep 200
+    WinMove,ahk_id %windowID%,,0,0,A_ScreenWidth,A_ScreenHeight
+    WinMaximize, ahk_id %windowID%
+    
+    WinSet, AlwaysOnTop, On, ahk_id %windowID%
+    Sleep 100
+    WinSet, AlwaysOnTop, Off, ahk_id %windowID%
+    
+    inGame := true
+    return
+}
+
+actionReset(){
+    global
+    GuiControlGet, currentFocus, Focus
+    ; MsgBox, %currentFocus%
+    if(currentFocus="msctls_hotkey321" || currentFocus="msctls_hotkey322") {
+        return
+    }
+
+    row := verticalSlider
+    col := horizontalSlider
+    p := currentPadding
+    winHeight := (screenHeight-8)/row
+    winWidth := screenWidth/col
+    tileCount := row*col
+
+    
+    resetList := getResetList(tileCount, inGame, inGameWindow)
+
+    for i, windowID in resetList {
+        windowID := gameWindowList%A_Index%
+        index := i-1
+        x := Mod(index,col)
+        y := Floor((index)/col)
+        distX := winWidth*x
+        distY := winHeight*y
+        WinSet, Style, -0xC40000, ahk_id %windowID%
+        WinMove,ahk_id %windowID%,,distX-p,distY-p,winWidth+p,winHeight+p
+        resetKey:=DEFAULT_CREATE_NEW_WORLD_KEY
+        ControlSend, ahk_parent, {Blind}{%resetKey% Down}{%resetKey% Up}, ahk_id %windowID%
+    }
+    Sleep, cleanF3PauseMenuWaitTime
+    for i, windowID in resetList {
+        f3Key:=DEFAULT_F3_KEY
+        ControlSend, ahk_parent, {Blind}{%f3Key% Down}{Esc}{%f3Key% Up}, ahk_id %windowID%
+    }
+
+    Gui, 2: new
+    Gui, 2: +LastFound +AlwaysOnTop +ToolWindow
+    WinSet, TransColor, EEAA99
+    Gui 2: Show
+
+    inGame := false
+    return
+}
+
+getResetList(tileCount, inGame, currentGameWindow){
+    global
+    result := []
+    WinGet, instanceList, list,ahk_class GLFW30,, Program Manager
+    Loop % instanceList
+    {
+        windowID := mcInstances%A_Index%
+        if(!inGame || windowID=currentGameWindow) {
+            result.Push(windowID)
+        }
+    }
+    return result
+}
+
+currentGameWindow:=0
+
 ; -----------------------------------------------------------------------
 ; START OF SCRIPT CODE
 
@@ -221,78 +309,13 @@ return
 ; -----------------------------------------------------------------------
 
 
-startGameRoutine:
-    if(inGame) {
-        return
-    }
 
-    MouseGetPos,,,windowID,,
-    WinGetClass, className, ahk_id %windowID%,
-    
-    if(className != "GLFW30") {
-        return
-    }
-    
-    ; WinSet, Style, +0xC00000, ahk_id %windowID%
-    Sleep 200
-    WinMove,ahk_id %windowID%,,0,0,A_ScreenWidth,A_ScreenHeight
-    WinMaximize, ahk_id %windowID%
-    
-    WinSet, AlwaysOnTop, On, ahk_id %windowID%
-    Sleep 100
-    WinSet, AlwaysOnTop, Off, ahk_id %windowID%
-    
-    inGame := true
+startGameRoutine:
+actionSelect()
 return
 
 newWorldRoutine:
-
-    GuiControlGet, currentFocus, Focus
-    ; MsgBox, %currentFocus%
-    if(currentFocus="msctls_hotkey321" || currentFocus="msctls_hotkey322") {
-        return
-    }
-
-    row := verticalSlider
-    col := horizontalSlider
-    p := currentPadding
-    winHeight := (screenHeight-8)/row
-    winWidth := screenWidth/col
-
-    WinGet, gameWindowList, list,ahk_class GLFW30,, Program Manager
-    Loop, %gameWindowList%
-    {
-        if(A_index>(row*col)) {
-            break
-        }
-        windowID := gameWindowList%A_Index%
-        index := A_Index-1
-        x := Mod(index,col)
-        y := Floor((index)/col)
-        distX := winWidth*x
-        distY := winHeight*y
-        WinSet, Style, -0xC40000, ahk_id %windowID%
-        WinMove,ahk_id %windowID%,,distX-p,distY-p,winWidth+p,winHeight+p
-        resetKey:=DEFAULT_CREATE_NEW_WORLD_KEY
-        ControlSend, ahk_parent, {Blind}{%resetKey% Down}{%resetKey% Up}, ahk_id %windowID%
-    }
-    Sleep, cleanF3PauseMenuWaitTime
-    Loop, %gameWindowList%
-    {
-        if(A_index>(row*col)) {
-            break
-        }
-        windowID := gameWindowList%A_Index%
-        f3Key:=DEFAULT_F3_KEY
-        ControlSend, ahk_parent, {Blind}{%f3Key% Down}{Esc}{%f3Key% Up}, ahk_id %windowID%
-    }
-
-    Gui, 2: new
-    Gui, 2: +LastFound +AlwaysOnTop +ToolWindow
-    WinSet, TransColor, EEAA99
-    Gui 2: Show
-
-    inGame := false
+actionReset()
 return
 
 
