@@ -1,6 +1,6 @@
 # SimpleWall Script
 
-AutoHotKey Script that creates a wall of Minecraft instances for faster speedrunning.
+AutoHotKey Script that creates a wall of Minecraft instances and automatically generate new worlds to increase the speed of finding good seeds for speedrunning.
 
 ![](screenshot.png)
 
@@ -13,6 +13,7 @@ AutoHotKey Script that creates a wall of Minecraft instances for faster speedrun
 
 
 ## Getting Started
+0. Setup multiple Minecraft instances (see below)
 1.  Install Current Version of AutoHotKey here: https://www.autohotkey.com/  
 2.  Download the Script using the link above
 3. Launch the script by double clicking the file
@@ -30,12 +31,11 @@ Is there something you noticed is missing?
 Is there an optimization or feature that you think should be implemented?  
 [Create a new issue here on github](https://github.com/Jesper-Hustad/SimpleWallScript/issues/new/choose) and we will take your feedback.
 
+## Feedback
+Please give feedback on how you are experiencing the program and any bugs you encounter!   
+Feel free to give ideas for new features you would like to see in future releases.
+
 ## Features
 - Make custom HotKeys for Select and Refresh 
 - Adjust wall by using the sliders and visualization
 - Adjust the spacing between windows
-
-
-## Feedback
-Please give feedback on how you are experiencing the program and any bugs you encounter!   
-Feel free to give ideas for new features you would like to see in future releases.
