@@ -5,7 +5,7 @@ AutoHotKey Script that creates a wall of Minecraft instances and automatically g
 ![](screenshot.png)
 
 ## Download
-### [Download the SimpleWall Script](https://github.com/Jesper-Hustad/SimpleWallScript/releases/download/Alpha/SimpleWallScript.ahk)
+### [Download the SimpleWall Script](https://github.com/Jesper-Hustad/SimpleWallScript/releases/download/v0.2/SimpleWallScript.ahk)
 
 
 
