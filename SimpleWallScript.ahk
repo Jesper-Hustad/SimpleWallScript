@@ -39,7 +39,7 @@ resetList:=[]
 defaultPadding=0
 inGame := false
 previousInstanceCount:=0
-instanceChange := false
+layoutChange := false
 
 SysGet, screenWidth, 61 
 SysGet, screenHeight, 62 
@@ -220,8 +220,8 @@ gui, add, text, x%t1% y%tablePosY% w2 h%t3% 0x7
 gui, add, text, x%tablePosX% y%t2% w%tableWidth% h2 0x7
 
 ; vertical and horizontal slider
-Gui, Add, Slider,  +E0x20 0 cRed x%tablePosX% y%t4% w%t5% h23 GSliderCol NoTicks ToolTip Range1-7 cBlack gcolumnSlider vhorizontalSlider, 2
-Gui, Add, Slider,  +E0x20 0 cRed x%t6% y%tablePosY% w23 h%tableHeight% GSliderRow NoTicks Left Range1-7 Invert Vertical cBlack gverticalSlider vverticalSlider, 2
+Gui, Add, Slider,  +E0x20 0 cRed x%tablePosX% y%t4% w%t5% h23 GSliderCol NoTicks ToolTip Range1-7 cBlack vhorizontalSlider, 2
+Gui, Add, Slider,  +E0x20 0 cRed x%t6% y%tablePosY% w23 h%tableHeight% GSliderRow NoTicks Left Range1-7 Invert Vertical cBlack vverticalSlider, 2
 
 
 ; title text
@@ -355,11 +355,6 @@ NewResetHotKey:
     newHotKeyInput(defaultResetKey, newKey, routine)
 return
 
-columnSlider:
-verticalSlider:
-instanceChange:=true
-return
-
 NewPadding:
 return
 
@@ -369,6 +364,7 @@ sliderRow:
     hideAllLines()
     displayLines(horizontalSlider, false)
     displayLines(verticalSlider, true)
+    layoutChange:=true
 return
 
 minimize:
