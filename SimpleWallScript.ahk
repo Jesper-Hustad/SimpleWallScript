@@ -2,14 +2,15 @@
 ; Version 0.2 Feature comforts and perfomance improvements
 
 
-; If you have rebound any key in Minecraft change them here
+; If you have rebound any relevant key in Minecraft change them here
 CREATE_NEW_WORLD_KEY=F6
 F3_KEY=F3
 
-; You can change initial starting hotkeys here (^ =ctrl, ! = alt, # = shift)
+; hotkeys can be changed in program, but defaults can be changed here (^ =ctrl, ! = alt, # = shift)
 defaultStartKey=^E
 defaultResetKey=^Y
 
+; slower computers may need to increase this value
 cleanF3PauseMenuWaitTime:=300
 
 ; INSTRUCTIONS:
@@ -25,7 +26,6 @@ cleanF3PauseMenuWaitTime:=300
 ; This script assumes you have multiple instances of minecraft running using MultiMC or similar
 ; Learn how to setup minecraft with MultiMC and speedrunning mods here:https://www.youtube.com/watch?v=VL8Syekw4Q0
 ; After setting up MultiMC select an instance and click "Copy Instance" to create more
-
 
 
 ; -----------------------   START OF WALL CODE   -----------------------
@@ -113,8 +113,6 @@ actionReset(){
     for i, windowID in resetList 
         performKeystroke(windowID, F3_KEY, "Esc")
 
-
-    
     inGame := false
     layoutChange := false
     previousInstanceCount := newInstanceCount
@@ -142,8 +140,7 @@ getResetList(tileCount, inGame, currentGameWindow){
     Loop % windowCount
     {
         windowID := instanceList%A_Index%
-        if(!inGame || windowID=currentGameWindow)
-            result.Push(windowID)
+        result.Push(windowID)
     }
     return result
 }
