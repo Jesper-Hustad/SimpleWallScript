@@ -2,7 +2,7 @@
 
 AutoHotKey Script that creates a wall of Minecraft instances and automatically generate new worlds to increase the speed of finding good seeds for speedrunning.
 
-![](screenshot.png)
+[![](screenshot.png)](https://github.com/Jesper-Hustad/SimpleWallScript/releases/latest)
 
 ## Download
 ### [Download the SimpleWall Script](https://github.com/Jesper-Hustad/SimpleWallScript/releases/latest)
