@@ -1,17 +1,16 @@
 ; Made by Jesper Hustad aka. Snacksy
-; Version 0.2 Feature comforts and perfomance improvements
 
 
 ; If you have rebound any relevant key in Minecraft change them here
-CREATE_NEW_WORLD_KEY=F6
-F3_KEY=F3
+CREATE_NEW_WORLD_KEY={F6}
+F3_KEY={F3 Down}{ESC}{F3 Up}
 
 ; hotkeys can be changed in program, but defaults can be changed here (^ =ctrl, ! = alt, # = shift)
 defaultStartKey=^E
 defaultResetKey=^Y
 
 ; slower computers may need to increase this value
-cleanF3PauseMenuWaitTime:=300
+cleanF3PauseMenuWaitTime:=500
 
 ; INSTRUCTIONS:
 ; Install Current Version of AutoHotKey here: https://www.autohotkey.com/
@@ -33,7 +32,9 @@ cleanF3PauseMenuWaitTime:=300
 SendMode Input
 CoordMode, Mouse , Screen
 #NoEnv  
+#NoTrayIcon
 
+VERSION=v1.0.0
 currentGameWindow:=0
 resetList:=[]
 defaultPadding=0
@@ -93,15 +94,13 @@ actionReset(){
     row := verticalSlider
     col := horizontalSlider
     winHeight := (screenHeight-8)/row
-    winWidth := screenWidth/col
+    winWidth := fsWidth/col
     tileCount := row*col
 
-    WinGet, newInstanceCount, list,ahk_class GLFW30,, Program Manager
-
+    WinGet, newInstanceCount, Count, ahk_class GLFW30,, Program Manager
     if(newInstanceCount!=globalInstanceList) {
         layoutChange := true
         WinGet, globalInstanceList, list,ahk_class GLFW30,, Program Manager
-        ; globalInstanceList := newInstanceCount
     }
 
     windowCount := newInstanceCount<tileCount ? newInstanceCount : tileCount
@@ -129,7 +128,7 @@ actionReset(){
     ; clean pause menu by pressing F3 + ESC simultaniously
     Sleep, cleanF3PauseMenuWaitTime
     for i, windowID in resetList 
-        performKeystroke(windowID, F3_KEY, "Esc")
+        performKeystroke(windowID, F3_KEY)
 
     isSecondReset := (!inGame || isSecondReset)
     inGame := false
@@ -149,8 +148,8 @@ positionWall(windowID, index, columns, winWidth, winHeight){
     return
 }
 
-performKeystroke(windowID, key, combination:=""){
-    ControlSend, ahk_parent, {Blind}{%key% Down}{%combination%}{%key% Up}, ahk_id %windowID%
+performKeystroke(windowID, key){
+    ControlSend, ahk_parent, {Blind}%key%, ahk_id %windowID%
     return
 }
 
@@ -160,17 +159,6 @@ removeFocus(){
     Gui, 2: Show
     return
 }
-
-indexOfInstance(windowID){
-    global
-    Loop % globalInstanceList
-    {
-        if(globalInstanceList%A_Index%=windowID)
-            return A_Index
-    }
-    return -1
-}
-
 ; ------------------------------- Start of UI -----------------------------------
 
 Menu, tray, add, Show GUI, GUIMenu
@@ -231,7 +219,7 @@ Gui, Add, Slider,  +E0x20 0 cRed x%t6% y%tablePosY% w23 h%tableHeight% GSliderRo
 gui, font, Q5 c%color12% s13, Bahnschrift 	 ;color & size GuiTitle
 Gui, Add, Text, +E0x20 0x200 cBlack x6 y3 w%width% h22 BackgroundTrans Left gGuiMove , %guititle%   
 gui, font, Q5 c888888 s10, Calibri	 ;color & size GuiTitle
-Gui, Add, Text, +E0x20 0x200 x142 y5 w%width% h22 BackgroundTrans gGuiMove , v0.2.0  
+Gui, Add, Text, +E0x20 0x200 x142 y5 w%width% h22 BackgroundTrans gGuiMove , %VERSION%  
 
 ; hotkey input GUI
 i1 := inputPosY+20, i2 :=i1+28, i3 :=i2+20, i4:=i3+28, i5:=i4+20
@@ -280,6 +268,10 @@ Gosub initializeLines
 ; initialize default hotkeys
 HotKey, %defaultResetKey%, newWorldRoutine, On
 HotKey, %defaultStartKey%, startGameRoutine, On
+
+; I_Icon = C:\favicon.ico
+; IfExist, %I_Icon%
+; Menu, Tray, Icon, %I_Icon%, 1, 1
 
 ; display gui
 gui, show, w%width% h%height%
@@ -387,6 +379,7 @@ Loop, %gameWindowList%
     WinMove,ahk_id %windowID%,,m0,m2,m1,m3
 }
 gui, destroy
+ExitApp
 return
 
 GuiMove:     		
