@@ -38,8 +38,10 @@ currentGameWindow:=0
 resetList:=[]
 defaultPadding=0
 inGame := false
-previousInstanceCount:=0
+previousInstanceCount:=-1
 layoutChange := false
+isSecondReset := false
+globalInstanceList := 0
 
 SysGet, screenWidth, 61 
 SysGet, screenHeight, 62 
@@ -67,7 +69,7 @@ actionSelect(){
     ; make fullscreen
     WinMove,ahk_id %windowID%,,0,0,A_ScreenWidth,A_ScreenHeight
     
-    inGame := true
+    inGame := true, isSecondReset := false
     currentGameWindow := windowID
     return
 }
@@ -95,17 +97,33 @@ actionReset(){
     tileCount := row*col
 
     WinGet, newInstanceCount, list,ahk_class GLFW30,, Program Manager
-    if(newInstanceCount!=previousInstanceCount)
+
+    if(newInstanceCount!=globalInstanceList) {
         layoutChange := true
+        WinGet, globalInstanceList, list,ahk_class GLFW30,, Program Manager
+        ; globalInstanceList := newInstanceCount
+    }
 
-    ; if user is in game and no layout changes have occured only reset current game window 
-    resetList := (inGame&&!layoutChange) ? [currentGameWindow] : getResetList(tileCount, inGame, currentGameWindow)
-
-    for i, windowID in resetList
-        positionWall(windowID, col, winWidth, winHeight)
+    windowCount := newInstanceCount<tileCount ? newInstanceCount : tileCount
     
+    resetList := {}
+    Loop % windowCount
+    {
+        windowID := globalInstanceList%A_Index%
+        isActiveWindow := (currentGameWindow=windowID)
+
+        if(layoutChange || isSecondReset || (inGame=isActiveWindow))
+            resetList[A_Index-1] := windowID
+    }
+
+    ; only move windows if required
+    if(layoutChange || inGame){
+    for i, windowID in resetList
+        positionWall(windowID, i, col, winWidth, winHeight)    
+    }
+
     ; quick reset world with Autum mod (by default F6)
-    for i, windowID in resetList 
+    for i, windowID in resetList
        performKeystroke(windowID, CREATE_NEW_WORLD_KEY)
 
     ; clean pause menu by pressing F3 + ESC simultaniously
@@ -113,36 +131,22 @@ actionReset(){
     for i, windowID in resetList 
         performKeystroke(windowID, F3_KEY, "Esc")
 
+    isSecondReset := (!inGame || isSecondReset)
     inGame := false
     layoutChange := false
-    previousInstanceCount := newInstanceCount
     return
 }
 
-positionWall(windowID, columns, winWidth, winHeight){
+positionWall(windowID, index, columns, winWidth, winHeight){
     global
-    i := indexOfInstance(windowID)-1
     p := currentPadding
-    x := Mod(i,columns)
-    y := Floor(i/columns)
+    x := Mod(index,columns)
+    y := Floor(index/columns)
     distX := winWidth*x
     distY := winHeight*y
     WinSet, Style, -0xC40000, ahk_id %windowID%
     WinMove,ahk_id %windowID%,,distX-p,distY-p,winWidth+p,winHeight+p
     return
-}
-
-getResetList(tileCount, inGame, currentGameWindow){
-    global
-    WinGet, instanceList, list,ahk_class GLFW30,, Program Manager
-    result := []
-    windowCount := instanceList<tileCount ? instanceList : tileCount
-    Loop % windowCount
-    {
-        windowID := instanceList%A_Index%
-        result.Push(windowID)
-    }
-    return result
 }
 
 performKeystroke(windowID, key, combination:=""){
@@ -159,9 +163,9 @@ removeFocus(){
 
 indexOfInstance(windowID){
     global
-    Loop % instanceList
+    Loop % globalInstanceList
     {
-        if(instanceList%A_Index%=windowID)
+        if(globalInstanceList%A_Index%=windowID)
             return A_Index
     }
     return -1
@@ -223,7 +227,6 @@ gui, add, text, x%tablePosX% y%t2% w%tableWidth% h2 0x7
 Gui, Add, Slider,  +E0x20 0 cRed x%tablePosX% y%t4% w%t5% h23 GSliderCol NoTicks ToolTip Range1-7 cBlack vhorizontalSlider, 2
 Gui, Add, Slider,  +E0x20 0 cRed x%t6% y%tablePosY% w23 h%tableHeight% GSliderRow NoTicks Left Range1-7 Invert Vertical cBlack vverticalSlider, 2
 
-
 ; title text
 gui, font, Q5 c%color12% s13, Bahnschrift 	 ;color & size GuiTitle
 Gui, Add, Text, +E0x20 0x200 cBlack x6 y3 w%width% h22 BackgroundTrans Left gGuiMove , %guititle%   
@@ -283,7 +286,6 @@ gui, show, w%width% h%height%
 gui, +lastfound +HwndThisGui
 return
 ; end of gui initialization
-
 
 hideAllLines(){
     global
@@ -356,6 +358,7 @@ NewResetHotKey:
 return
 
 NewPadding:
+layoutChange:=true
 return
 
 initializeLines:
