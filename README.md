@@ -29,7 +29,7 @@ Learn how to setup minecraft with MultiMC and speedrunning mods here: https://ww
 After setting up MultiMC select an instance and click "Copy Instance" to create more.
 
 ## What if i don't trust .exe file?
-You can also run the AutoHotKey script directly (used to make the exe). Install the [current version of AutoHotKey](https://www.autohotkey.com/) and open the `SimpleWallScript.ahk` file included in the release tab.
+You can also run the AutoHotKey script directly (used to make the exe). Install the [current version of AutoHotKey](https://www.autohotkey.com/) and open the `SimpleWallScript.ahk` file included in the release.
 
 ## Feedback wanted!
 Is there something you noticed is missing or experiencing a wierd bug? 
