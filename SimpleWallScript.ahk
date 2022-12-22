@@ -389,10 +389,7 @@ actionSelect()
 return
 
 newWorldRoutine:
-Loop {
-    actionReset()
-    Sleep, 5000
-}
+actionReset()
 return
 
 newStartHotKey:
