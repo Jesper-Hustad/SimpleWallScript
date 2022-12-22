@@ -4,14 +4,16 @@
   </a>
 
   <h1 align="center">SimpleWall Script</h1>
+  <!-- <br> -->
+  <!-- <a href="" align="center">Official webpage</a> -->
 
 
   <p align="center">
     Multi instance Minecraft wall for finding speedrun seeds.
-    <!-- <br>
-    <a href="https://reponame/issues/new?template=bug.md">Report bug</a>
-    ·
-    <a href="https://reponame/issues/new?template=feature.md&labels=feature">Request feature</a> -->
+    <br>
+    <a href="https://jesper-hustad.github.io/SimpleWallScript/">Website for official Download</a>
+    <!-- · -->
+    <!-- <a href="https://reponame/issues/new?template=feature.md&labels=feature">Request feature</a> -->
   </p>
   
 </p>
@@ -19,7 +21,7 @@
 ![](gui.jpg)
 
 <!-- ## Download -->
-## [Download the SimpleWall Script](https://github.com/Jesper-Hustad/SimpleWallScript/releases/download/v0.2/SimpleWallScript.ahk)
+## [Visit SimpleWallScript website for download](https://jesper-hustad.github.io/SimpleWallScript/)
 
 
 
