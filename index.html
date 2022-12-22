@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+
+    <title>SimpleWall Script</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.writeas.net/css/write.f8e112bb4e7c64af5a97c.css" />
+    <link rel="stylesheet" type="text/css" href="/css/main.css?9" />
+    <link rel="shortcut icon" href="icon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+    <meta name="description" content="Minimalist, federated, self-hosted blogging platform.">
+    <meta name="application-name" content="WriteFreely">
+    <meta name="application-url" content="https://writefreely.org">
+    <meta itemprop="name" content="WriteFreely">
+    <meta itemprop="description" content="Minimalist, federated, self-hosted blogging platform.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="WriteFreely">
+    <meta name="twitter:description" content="Minimalist, federated, self-hosted blogging platform.">
+    <meta property="og:title" content="WriteFreely" />
+    <meta property="og:site_name" content="WriteFreely" />
+    <meta property="og:type" content="object" />
+    <meta property="og:url" content="https://writefreely.org/" />
+    <meta property="og:description" content="Minimalist, federated, self-hosted blogging platform." />
+    <style type="text/css">
+        body:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 45rem;
+            z-index: -1;
+            background: url(wall.webp);
+            opacity: 0.1;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(0, -50%);
+            padding: 0;
+            width: auto;
+            background: transparent;
+            border: 0;
+        }
+        
+        .btn.cta {
+            display: inline-block;
+            white-space: nowrap;
+        }
+        
+        img.screens {
+            max-width: 100%;
+        }
+        
+        body {
+            background-color: #323138;
+            color: #cdcdcd;
+            font-family: sans-serif;
+            z-index: 1;
+            margin-top: -3em;
+        }
+        
+        a {
+            color: #78a7d8;
+        }
+        
+        a .btn {
+            font-family: 'Open Sans';
+        }
+        /* font-family: 'Open Sans'; */
+        
+        h2 {
+            margin-top: 0.2em;
+        }
+        
+        a.btn.cta,
+        a.btn.gentlecta,
+        a.btn.submit,
+        a.btn[type=submit],
+        button.cta,
+        button.gentlecta,
+        button.submit,
+        button[type=submit],
+        input.cta,
+        input.gentlecta,
+        input.submit,
+        input[type=submit],
+        select.inputform.cta,
+        select.inputform.gentlecta,
+        select.inputform.submit,
+        select.inputform[type=submit],
+        textarea.inputform.cta,
+        textarea.inputform.gentlecta,
+        textarea.inputform.submit,
+        textarea.inputform[type=submit] {
+            font-family: inherit;
+        }
+        
+        #official-writing h2,
+        #official-writing h3,
+        #official-writing h4,
+        #wrapper h2,
+        #wrapper h3,
+        #wrapper h4 {
+            color: #dbdbdb;
+        }
+    </style>
+
+
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+
+<body id="promo">
+    <!-- <nav>
+        <div style="flex: 2; align-self: flex-end;">
+            <a href="/" class="channel dim"><img style="height:1em" src="/img/icon.svg" /></a>
+        </div>
+        <a href="/about">About</a>
+        <a href="/features/">Features</a>
+        <a href="/apps">Apps</a>
+        <nav class="dropdown-nav">
+            <ul>
+                <li class="has-submenu"><a>Resources <img class="ic-18dp" src="https://cdn.writeas.net/img/ic_down_arrow_dark@2x.png" /></a>
+                    <ul>
+                        <li><a href="https://blog.writefreely.org" tabindex="-1">Blog</a></li>
+                        <li><a href="/docs" tabindex="-1">Documentation</a></li>
+                        <li><a href="https://github.com/writefreely/writefreely">Source Code</a></li>
+                        <li><a href="https://discuss.write.as/c/writefreely" tabindex="-1">Forum</a></li>
+                        <li><a href="/contribute" tabindex="-1">Contributing</a></li>
+                        <li><a href="/support" tabindex="-1">Help</a></li>
+                        <li><a href="/services/hosting" tabindex="-1">Hosting</a></li>
+                        <li><a href="/partners" tabindex="-1">Partners</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <a href="/start">Install</a>
+    </nav> -->
+
+
+    <div id="official-writing" style="text-align: center">
+        <div id="overlay"></div>
+
+        <div class="heading" style="margin-bottom: 3em">
+            <h1 style="font-size: 3em; margin-bottom: -0.2em;"><img src="/icon.png" alt="WriteFreely" style="margin-bottom: 5px;" /><br>Simple Wall Script</h1>
+
+            <div style="text-align: center;max-width: 40em;margin: 0 auto;">
+                <p style="font-size: 1.5em">Multi instance Minecraft wall for finding speedrun seeds.</p>
+
+                <p style="margin-top: 2rem;font-size: 1.2em"><a class="btn cta" style="" href="/start">Download Latest v1.1.0</a></p>
+                <!-- <p style="margin-top: 1rem;font-size: 1.2em"><a class="btn cta secondary" href="/instances">Join a Community</a></p> -->
+            </div>
+        </div>
+        <br><br>
+
+        <div class="content-container snug writing" style="margin-bottom: 1em">
+            <img class="screens" src="gui.jpg" alt="A demo WriteFreely instance" />
+        </div>
+
+        <!-- <section class="features" style="margin-top: 0">
+            <div class="feature">
+                <h3>Made for Writing</h3>
+                <p>Our fast, auto-saving editor is all you need to quickly get your thoughts down and published to your blog.</p>
+            </div>
+
+            <div class="feature">
+                <h3>Light &amp; Easy to Install</h3>
+                <p>WriteFreely sets your ideas and your server's resources free. Just run the binary to start your site up.</p>
+            </div>
+
+            <div class="feature">
+                <h3>Build a Community</h3>
+                <p><a href="/features/community-building">Host your own community</a> of writers. Interact with the decentralized social web via ActivityPub.</p>
+            </div>
+
+            <div class="feature">
+                <h3>Mature &amp; Stable</h3>
+                <p>WriteFreely has spent the past six years reliably powering more than 150,000 blogs on <a href="https://write.as">Write.as</a>.</p>
+            </div>
+        </section> -->
+
+        <div class="content-container snug writing" style="text-align:left">
+
+
+
+
+            <h2>Features</h2>
+            <p>
+                <!-- <ul> -->
+                <b>&#8211 Select HotKey:</b> Sets window under cursor as fullscreen<br>
+                <b>&#8211 Refresh HotKey:</b> New world for all instances<br>
+                <b>&#8211 Column and rows:</b> Select custom wall setups<br>
+                <!-- </ul> -->
+            </p>
+
+
+
+
+            <h2>Getting Started</h2>
+            <p>Run multiple instances of Minecraft with <a href="https://multimc.org/">MultiMC</a>. For automatic resetting <a href="https://github.com/VoidXWalker/Atum/">Atum mod</a> is required. Recommend watching <a href="https://www.youtube.com/watch?v=VL8Syekw4Q">how to Setup Minecraft Speedrunning</a>                by k4yfour for a detailed mod installation guide.
+
+                <br><br> After installing run SimpleWallScript.exe. WindowsDefender window will display a warning, click "More Info" and "Run Anyway" to start SimpleWall Script.
+
+                <!-- Download no news feed, notifications, or unnecessary <em>likes</em>                or <em>claps</em> to take you away from your train of thought. You get a <a href="https://write.as/new" target="editor">distraction-free writing environment</a>, and readers can enjoy a <a href="https://blog.writefreely.org/" target="reading">clean reading experience</a>. -->
+
+            </p>
+
+            <h2>Alternative to .exe</h2>
+            <p>
+                Download <a href="https://www.autohotkey.com/">AutoHotKey</a> and run the .ahk version instead. This is the same program that the .exe is compiled from. The GitHub source code is also available.
+            </p>
+
+
+            <!-- <h2>Easy on the eyes (and your server)</h2>
+            <p>
+
+                WriteFreely is written in Go (golang), so it runs anywhere and takes up very few resources &mdash; you can even run it on a Raspberry Pi! Installation is as easy as downloading a binary and a few supporting files, no other dependencies required.
+
+
+
+            </p> -->
+
+
+            <p style="text-align: center;margin-top: 3em;">
+
+
+                <a class="btn cta secondary " style="margin-left:1em; " href="https://github.com/Jesper-Hustad/SimpleWallScript/releases/download/v.1.0.0/SimpleWallScript.ahk">.ahk v1.1.0</a>
+                <a class="btn cta " style="margin-left:1em;" href="https://github.com/Jesper-Hustad/SimpleWallScript">GitHub Page</a>
+                <a class="btn cta secondary" style="margin-left:1em;" href="https://github.com/Jesper-Hustad/SimpleWallScript/releases/download/v.1.0.0/SimpleWallScript.exe">.exe v1.1.0</a>
+            </p>
+        </div>
+
+        <!-- <div class="content-container snug writing ">
+            <h2>See what others are building</h2>
+            <p>WriteFreely powers tens of thousands of individual blogs, and hundreds of communities.</p>
+            <p>See what's been<br /> <a href="/createdwith " style="font-size: 1.4em ">Created with WriteFreely</a></p>
+        </div> -->
+
+    </div>
+
+
+
+    <!-- <div id="modal-demo " class="modal ">
+    </div> -->
+
+    <footer class="contain-me ">
+
+        <!-- <hr /> -->
+        <div class="marketing-section ">
+            <div class="clearfix blurbs ">
+
+                <!-- <div class="fourth ">
+                    <h3><a class="home " style="font-style:italic;font-weight:normal " href="/ ">write freely</a></h3>
+                    <ul>
+                        <li><a href="/about ">about</a></li>
+                        <li><a href="https://blog.writefreely.org ">blog</a></li>
+                        <li><a href="/support ">support</a></li>
+                        <li><a href="/services/hosting ">hosting</a></li>
+                        <li><a href="/apps ">apps</a></li>
+                        <li style="padding-top: 1em; "><a class="github-button " href="https://github.com/writefreely/writefreely " data-icon="octicon-star " data-show-count="true " aria-label="Star writefreely/writefreely on GitHub ">Star</a></li>
+                    </ul>
+                </div> -->
+
+                <!-- <div class="fourth ">
+                    <h3>community</h3>
+                    <ul>
+                        <li><a href="/instances ">join a community</a></li>
+                        <li><a href="/createdwith ">created with wf</a></li>
+                        <li><a href="https://discuss.write.as/c/writefreely ">forum</a></li>
+                        <li><a href="https://fediverse.network/writefreely ">fediverse stats</a></li>
+                    </ul>
+                </div>
+                <div class="fourth ">
+                    <h3>developers</h3>
+                    <ul>
+                        <li><a href="/start ">get started</a></li>
+                        <li><a href="https://github.com/writefreely/writefreely/releases/latest ">download</a></li>
+                        <li><a href="https://github.com/writefreely/writefreely ">source code</a></li>
+                        <li><a href="https://developers.write.as/ " title="Build on Write.as with our open developer API. ">api</a></li>
+                    </ul>
+                </div>
+                <div class="fourth ">
+                    <h3>company</h3>
+                    <ul>
+                        <li><a href="https://write.as/about ">write.as</a></li>
+                        <li><a href="https://write.as/principles ">principles</a></li>
+                        <li><a href="https://write.as/matt/ ">matt</a></li>
+                        <li class="icons ">
+                            <a href="https://writing.exchange/@write_as " rel="me "><img src="https://cdn.writeas.net/img/mastodon.svg " alt="@write_as on Writing Exchange / Mastodon " /></a>
+                            <a href="https://twitter.com/writeas__ " rel="me "><img src="https://cdn.writeas.net/img/twitter.svg " alt="@writeas__ on Twitter " /></a>
+                        </li>
+                    </ul>
+                </div> -->
+
+
+
+            </div>
+        </div>
+
+    </footer>
+
+    <script src="https://writeas.scdn4.secure.raxcdn.com/js/h.js "></script>
+    <script>
+        function showDemo() {
+            showModal('demo');
+        }
+
+        function showModal(id) {
+            var $modal = document.getElementById('modal-' + id);
+            $modal.innerHTML = '<iframe width="560 " height="315 " sandbox="allow-same-origin allow-scripts " src="https://video.writeas.org/videos/embed/cc55e615-d204-417c-9575-7b57674cc6f3?autoplay=true " frameborder="0 " allowfullscreen></iframe>';
+            document.getElementById('overlay').style.display = 'block';
+            $modal.style.display = 'block';
+            try {
+                _paq.push(['trackEvent', 'Videos', 'demo', 'view']);
+            } catch (e) {}
+        }
+        H.getEl('overlay').on('click', function(e) {
+            e.preventDefault();
+            document.getElementById('overlay').style.display = 'none';
+            var modals = document.querySelectorAll('.modal');
+            for (var i = 0; i < modals.length; i++) {
+                modals[i].innerHTML = '';
+                modals[i].style.display = 'none';
+            }
+        });
+    </script>
+
+
+    <!-- <script type="text/javascript " src="https://cdn.writeas.net/js/menu.js "></script>
+    <noscript><p><img src="//analytics.write.as/piwik.php?idsite=12 " style="border:0; " alt=" " /></p></noscript>
+    <script type="text/javascript ">
+        var _paq = _paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        _paq.push(['enableHeartBeatTimer']);
+        (function() {
+            var u = "//analytics.write.as/ ";
+            _paq.push(['setTrackerUrl', u + 'piwik.php']);
+            _paq.push(['setSiteId', '12']);
+            var d = document,
+                g = d.createElement('script'),
+                s = d.getElementsByTagName('script')[0];
+            g.type = 'text/javascript';
+            g.async = true;
+            g.defer = true;
+            g.src = u + 'piwik.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+
+        try {
+            WebFontConfig = {
+                custom: {
+                    families: ['Lora:400,700:latin', 'Open+Sans:400,700:latin'],
+                    urls: ['https://cdn.writeas.net/css/fonts.css']
+                }
+            };
+            (function() {
+                var wf = document.createElement('script');
+                wf.src = 'https://cdn.writeas.net/js/webfont.js';
+                wf.type = 'text/javascript';
+                wf.async = 'true';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(wf, s);
+            })();
+        } catch (e) {}
+    </script> -->
+</body>
+
+</html>

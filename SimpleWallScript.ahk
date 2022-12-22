@@ -10,7 +10,7 @@ defaultStartKey=^E
 defaultResetKey=^Y
 
 ; slower computers may need to increase this value
-cleanF3PauseMenuWaitTime:=500
+cleanF3PauseMenuWaitTime:=1300
 
 ; INSTRUCTIONS:
 ; Install Current Version of AutoHotKey here: https://www.autohotkey.com/
@@ -34,7 +34,7 @@ CoordMode, Mouse , Screen
 #NoEnv  
 #NoTrayIcon
 
-VERSION=v1.0.0
+VERSION=1.1.0
 currentGameWindow:=0
 resetList:=[]
 defaultPadding=0
@@ -43,6 +43,7 @@ previousInstanceCount:=-1
 layoutChange := false
 isSecondReset := false
 globalInstanceList := 0
+hoverNavigationCount:=0
 
 SysGet, screenWidth, 61 
 SysGet, screenHeight, 62 
@@ -159,6 +160,7 @@ removeFocus(){
     Gui, 2: Show
     return
 }
+
 ; ------------------------------- Start of UI -----------------------------------
 
 Menu, tray, add, Show GUI, GUIMenu
@@ -186,8 +188,10 @@ inputPosX := 248
 inputPosY := 38
 
 W1 := width - 7,w2 := width - 5,w3 := width - 3,w4 := width - 72
-,w6:= width -47,w7:= width - 25,w5 := (width-72) //2,h1 := height - 50
+,w6:= width -57,w7:= width - 25,w5 := (width-72) //2,h1 := height - 50
 ,h3 := height - 20,h2 := height - 17,sbpart := (width-70) //2
+
+w8:=w7-49, w9:=w8+1, w10:=w7-5, w11:=width-w10, w12:=w6-5, w13:=w11+2, w14:=w8-5
 
 gui, destroy
 
@@ -198,9 +202,19 @@ Gui, Add, Progress,+E0x20 x-0 y0 w%width%+2 h26 Background%color1% Disabled ;tit
 Gui Add, Progress, x%tablePosX% y%tablePosY% w%tableWidth% h%tableHeight% Backgroundfcfcfc
 
 gui, font, Q5 c%color12% s14, Bahnschrift Light	
-Gui, Add, Text, +E0x20 0x200 x%w7% cBlack y2 w20 h20 BackgroundTrans Center gguiclose, X ;✕ ✖ ✗ ✘
+Gui, Add, Progress,+E0x20 x%w10% y0 w%w11% h26 Backgroundred vcloseHover Disabled Hidden
+Gui, Add, Progress,+E0x20 x%w12% y0 w%w13% h26 Backgroundaaa6a6 vminimizeHover Disabled Hidden
+Gui, Add, Progress,+E0x20 x%w14% y0 w17 h26 Backgroundaaa6a6 vsettingHover Disabled Hidden
+
+
+Gui Font, q5 s14, Arial Unicode MS
+; Gui Add, Text, +E0x20 0x200 cBlack x%w8% y2 w15 h22 vsettingText1 BackgroundTrans Left gguisettings, % Chr(0x22EE)
+; Gui Add, Text, +E0x20 0x200 cBlack x%w9% y2 w15 h22 vsettingText2 BackgroundTrans Left gguisettings, % Chr(0x22EE)
+
+Gui, Add, Text, +E0x20 0x200 x%w7% cBlack y2 w20 h20 vcloseText BackgroundTrans Center gguiclose, X
 gui, font, Q5 c%color12% s15, Consolas	
-Gui, Add, Text, +E0x20 0x200 x%w6% cBlack y-2 w20 h20 BackgroundTrans Center gminimize , _	 ; - to min gui
+Gui, Add, Text, +E0x20 0x200 x%w6% cBlack y-2 w20 h20 vminimizeText BackgroundTrans Center gminimize , _
+
 
 ; wall column and row editing GUI
 t1 := tablePosX+tableWidth, t2 := tablePosY+tableHeight, t3 := tableHeight+2, tOffset:=25, t4 := tablePosY-tOffset, t5 := tableWidth+2, t6 := t1+5
@@ -219,17 +233,35 @@ Gui, Add, Slider,  +E0x20 0 cRed x%t6% y%tablePosY% w23 h%tableHeight% GSliderRo
 gui, font, Q5 c%color12% s13, Bahnschrift 	 ;color & size GuiTitle
 Gui, Add, Text, +E0x20 0x200 cBlack x6 y3 w%width% h22 BackgroundTrans Left gGuiMove , %guititle%   
 gui, font, Q5 c888888 s10, Calibri	 ;color & size GuiTitle
-Gui, Add, Text, +E0x20 0x200 x142 y5 w%width% h22 BackgroundTrans gGuiMove , %VERSION%  
+Gui, Add, Text, +E0x20 0x200 x142 y5 w%width% h22 BackgroundTrans gGuiMove , v%VERSION%  
 
 ; hotkey input GUI
-i1 := inputPosY+20, i2 :=i1+28, i3 :=i2+20, i4:=i3+28, i5:=i4+20
+i1 := inputPosY+20, i2 :=i1+28, i3 :=i2+20, i4:=i3+28, i5:=i4+20, i50:=inputPosX-2, i6:=i50+19, i7:=i50+2
+
+
+; Gui Font, q5 s20, Arial Unicode MS
+; Gui Add, Text, +E0x20 0x200 cBlack x27 y%inputPosY% w%width% h22 BackgroundTrans Left , ?
+; F505
+; Chr(0x1F446)
+Gui Font, q5 s12, Arial Unicode MS
+Gui Add, Text, +E0x20 0x200 cBlack x%i50% y%inputPosY% w%width% h22 BackgroundTrans Left , % Chr(0x1F446)
+Gui Font, q5 s16, Arial Unicode MS
+Gui Add, Text, +E0x20 0x200 cBlack x%i7% y%i2% w%width% h22 BackgroundTrans Left , % Chr(0x21BB)
+Gui Font, q5 s7.5, Arial Unicode MS
+; Gui Add, Text, +E0x20 0x200 cBlack x%i7% y%i4% w%width% h22 BackgroundTrans Left , % Chr(0x2194)
+; Chr(0x25BB)
+
 
 gui, Font, Q5 s10 cBlack w500, Bahnschrift 
-Gui, Add, Text, +E0x20 0x200 cBlack x%inputPosX% y%inputPosY% w%width% h22 BackgroundTrans Left, Select
-Gui, Add, Hotkey, +E0x20 0 cRed x%inputPosX% y%i1% w70 h23 cBlack vChosenStartKey gNewStartHotKey, %defaultStartKey%
-Gui, Add, Text, +E0x20 0x200 cBlack x%inputPosX% y%i2% w%width% h22 BackgroundTrans Left, Refresh
-Gui, Add, Hotkey, x%inputPosX% y%i3% w70 h23  vChosenResetKey gNewResetHotKey, %defaultResetKey%
+Gui, Add, Text, +E0x20 0x200 cBlack x%i6% y%inputPosY% w%width% h22 BackgroundTrans Left, Select
+Gui, Add, Text, +E0x20 0x200 cBlack x%i6% y%i2% w%width% h22 BackgroundTrans Left,Refresh
 Gui, Add, Text, +E0x20 0x200 cBlack x%inputPosX% y%i4% w%width% h22 BackgroundTrans Left, Spacing
+
+
+
+gui, Font, Q5 s10 cBlack w500, Bahnschrift 
+Gui, Add, Hotkey, +E0x20 0 cRed x%inputPosX% y%i1% w70 h23 cBlack vChosenStartKey gNewStartHotKey, %defaultStartKey%
+Gui, Add, Hotkey, x%inputPosX% y%i3% w70 h23  vChosenResetKey gNewResetHotKey, %defaultResetKey%
 Gui, Add, Edit, +E0x20 0 x%inputPosX% y%i5% w70 h23 Number cBlack BackgroundWhite, 0
 Gui, Add, UpDown, vcurrentPadding gNewPadding Range-10-40, %defaultPadding%
 currentPadding := defaultPadding
@@ -272,9 +304,12 @@ HotKey, %defaultStartKey%, startGameRoutine, On
 ; I_Icon = C:\favicon.ico
 ; IfExist, %I_Icon%
 ; Menu, Tray, Icon, %I_Icon%, 1, 1
+; Menu, Tray, Tip , SimpleWall Script
+
+OnMessage(0x200, "hoverGui")
 
 ; display gui
-gui, show, w%width% h%height%
+gui, show, w%width% h%height%, SimpleWall Script %VERSION%
 gui, +lastfound +HwndThisGui
 return
 ; end of gui initialization
@@ -327,6 +362,26 @@ clickedBackgroundRemoveFocus(){
     GuiControl, Focus, DefaultButton
 }
 
+hoverGui(wParam, lParam, Msg) {
+    MouseGetPos,mouseX,mouseY,,
+    WinGetPos,winX,winY,,, %ThisGui%,
+    x:=(mouseX-winX)
+    y:=(mouseY-winY)
+    displayHoverGui(x,y)
+    
+    return
+}
+
+displayHoverGui(x,y){ 
+    global
+    insideY := (y<26)&&(y>1)
+    guiControl, % (insideY&&w10<x&&x<(w10+w11-1)) ? "Show" : "Hide", closeHover
+    guiControl, % (insideY&&w12<x&&x<w10) ? "Show" : "Hide", minimizeHover
+    ; guiControl, % (insideY&&w14<x&&x<w12) ? "Show" : "Hide", settingHover
+    
+    return
+}
+
 ; ---------------------- Subroutines ----------------------
 
 startGameRoutine:
@@ -334,7 +389,10 @@ actionSelect()
 return
 
 newWorldRoutine:
-actionReset()
+Loop {
+    actionReset()
+    Sleep, 5000
+}
 return
 
 newStartHotKey:
@@ -360,6 +418,10 @@ sliderRow:
     displayLines(horizontalSlider, false)
     displayLines(verticalSlider, true)
     layoutChange:=true
+return
+
+GuiSettings:
+MsgBox, clicked settings
 return
 
 minimize:
