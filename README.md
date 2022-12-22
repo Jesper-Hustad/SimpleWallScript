@@ -5,6 +5,7 @@
 
   <h1 align="center">SimpleWall Script</h1>
 
+
   <p align="center">
     Multi instance Minecraft wall for finding speedrun seeds.
     <!-- <br>
@@ -26,11 +27,13 @@
 
 
 
-
 ## Setting up multiple Minecraft instances
 This script assumes you have multiple instances of minecraft running using MultiMC or similar.  
 Learn how to setup minecraft with MultiMC and speedrunning mods here: https://www.youtube.com/watch?v=VL8Syekw4Q0.  
 After setting up MultiMC select an instance and click "Copy Instance" to create more.
+
+## What if i don't trust .exe file?
+You can also run the AutoHotKey script directly (used to make the exe). Install the [current version of AutoHotKey](https://www.autohotkey.com/) and open the `SimpleWallScript.ahk` file included in the release.
 
 ## Feedback wanted!
 Experiencing any bugs?  
