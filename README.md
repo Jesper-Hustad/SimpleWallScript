@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://example.com/">
+  <a href="https://jesper-hustad.github.io/SimpleWallScript/">
     <img src="icon.png" alt="Logo" width=160 height=160>
   </a>
 
@@ -18,7 +18,7 @@
   
 </p>
 
-![](gui.jpg)
+[![](gui.jpg)](https://jesper-hustad.github.io/SimpleWallScript/)
 
 <!-- ## Download -->
 ## [Visit SimpleWallScript website for download](https://jesper-hustad.github.io/SimpleWallScript/)
